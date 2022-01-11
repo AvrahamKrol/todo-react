@@ -1,6 +1,9 @@
 {
     "extends": [
-        "@sotream/eslint-config-react-ts"
+        "@sotream/eslint-config-react-ts",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript"
     ],
     "rules": {
         "no-void": "off",

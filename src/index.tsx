@@ -1,9 +1,10 @@
 // Core
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 // Components
-import { App } from './app';
+import { App } from './App';
 
 // Instruments
 import { store } from './lib/redux/init/store';
@@ -13,11 +14,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 render(
     <Provider store = { store }>
-        <App />
+        <Router>
+            <App />
+        </Router>
     </Provider>,
     document.getElementById('root'),
     () => {
         // eslint-disable-next-line no-console
-        console.log('%c Приложение успешно запущено ', 'background: #00ff00; color: #000000; padding: 2.5px;');
+        console.log(
+            '%c Приложение успешно запущено ',
+            'background: #00ff00; color: #000000; padding: 2.5px;',
+        );
     },
 );
