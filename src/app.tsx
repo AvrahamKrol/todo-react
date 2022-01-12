@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 // Components
-import { Nav } from './components';
+import { TaskManager, Profile } from './components';
 import { Login, Signup } from './components/forms';
 
 
@@ -11,18 +11,13 @@ import { Login, Signup } from './components/forms';
 export const App: FC = () => {
     return (
         <>
-            <Nav />
-            <main>
-                <Routes>
-                    <Route path = '/todo/login' element = { <Login /> } />
-                    <Route path = '/todo/signup' element = { <Signup />  } />
-                    <Route path = '*' element = { <Navigate to = '/todo/login' replace /> } />
-                </Routes>
-
-                { /* <h1>Органайзер</h1> */ }
-                { /* <Login /> */ }
-                { /* <Signup /> */ }
-            </main>
+            <Routes>
+                <Route path = '/todo/login' element = { <Login /> } />
+                <Route path = '/todo/signup' element = { <Signup />  } />
+                <Route path = '/todo/task-manager' element = { <TaskManager />  } />
+                <Route path = '/todo/profile' element = { <Profile />  } />
+                <Route path = '*' element = { <Navigate to = '/todo/login' replace /> } />
+            </Routes>
         </>
     );
 };

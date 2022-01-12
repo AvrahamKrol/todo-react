@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 // Components
 import { FormWrapper, Input } from '../../elements';
+import { MainWrapper } from '../../../pages/MainWrapper';
 
 import { schema } from './config';
 
@@ -15,20 +16,22 @@ export const Login: FC = () => {
     });
 
     return (
-        <FormWrapper
-            class = { 'sign-form' }
-            legend = { 'Вход' }
-            value = { 'Войти' }>
-            <Input
-                type = { 'email' }
-                placeholder = { 'Электропочта' }
-                error = { form.formState.errors.email }
-                register = { form.register('email') } />
-            <Input
-                type = { 'password' }
-                placeholder = { 'Пароль' }
-                error = { form.formState.errors.password }
-                register = { form.register('password') } />
-        </FormWrapper>
+        <MainWrapper>
+            <FormWrapper
+                class = { 'sign-form' }
+                legend = { 'Вход' }
+                value = { 'Войти' }>
+                <Input
+                    type = { 'email' }
+                    placeholder = { 'Электропочта' }
+                    error = { form.formState.errors.email }
+                    register = { form.register('email') } />
+                <Input
+                    type = { 'password' }
+                    placeholder = { 'Пароль' }
+                    error = { form.formState.errors.password }
+                    register = { form.register('password') } />
+            </FormWrapper>
+        </MainWrapper>
     );
 };
