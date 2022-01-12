@@ -9,3 +9,8 @@ export interface ISignupSchema {
     password: string;
     confirmPassword: string;
 }
+
+export interface ITaskCard {
+    title: string;
+    desc: string;
+}
