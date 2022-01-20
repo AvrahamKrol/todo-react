@@ -1,3 +1,4 @@
+import id from 'date-fns/locale/id';
 import { AnyAction } from 'redux';
 import { todosTypes } from '../types';
 
@@ -14,7 +15,10 @@ export const todosReducer = (state = initialState, action: AnyAction) => {
             return {
                 ...state,
                 isTaskCardOpen: false,
-                todos:          action.payload,
+                todos:          [
+                    action.payload,
+                    ...state.todos,
+                ],
             };
         }
         case todosTypes.DELETE_TODO: {
