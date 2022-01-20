@@ -1,2 +1,3 @@
 export * from './yupTypes';
-export * from './Props';
+export * from './todos';
+export type { IIsLogged, IButton, IToken } from './types';

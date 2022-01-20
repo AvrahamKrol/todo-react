@@ -17,7 +17,7 @@ export const schema: yup.SchemaOf<ITaskCard> = yup.object().shape({
         .min(3, tooShortMessageTitle)
         .max(64, tooLongMessageTitle)
         .required(),
-    desc: yup
+    description: yup
         .string()
         .min(3, tooShortMessageDesc)
         .max(64, tooLongMessageDesc)

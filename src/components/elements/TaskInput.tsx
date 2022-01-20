@@ -5,7 +5,7 @@ type Props = {
     placeholder: string;
     type?: string;
     class?: string;
-    register: UseFormRegisterReturn;
+    register?: UseFormRegisterReturn;
 };
 
 export const TaskInput: FC<Props> = (props) => {

@@ -31,5 +31,8 @@
   "window.zoomLevel": 0,
   "editor.fontSize": 14,
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "workbench.colorTheme": "Gruvbox Dark Hard"
+  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "cSpell.words": [
+    "todos"
+  ]
 }

@@ -2,6 +2,8 @@
 import { AnyAction, compose, Middleware } from 'redux';
 /* eslint-disable import/no-extraneous-dependencies, node/no-unpublished-import */
 import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
+
 
 export const logger = createLogger({
     duration:  true,
@@ -22,7 +24,7 @@ const devtools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const composeEnhancers
     = developmentEnvironment && devtools ? devtools : compose;
 
-const middleware: Middleware[] = [];
+const middleware: Middleware[] = [thunk];
 
 if (developmentEnvironment) {
     middleware.push(logger);

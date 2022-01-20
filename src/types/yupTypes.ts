@@ -7,10 +7,10 @@ export interface ISignupSchema {
     name: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
 }
 
 export interface ITaskCard {
     title: string;
-    desc: string;
+    description: string;
 }
