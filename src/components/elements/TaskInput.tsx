@@ -5,6 +5,7 @@ type Props = {
     placeholder: string;
     type?: string;
     class?: string;
+    value?: string;
     register?: UseFormRegisterReturn;
 };
 
@@ -14,6 +15,8 @@ export const TaskInput: FC<Props> = (props) => {
             className = { props.class }
             placeholder = { props.placeholder }
             type = { props.type }
+            value = { props.value }
+            onChange = { (event) => event.target.value }
             { ...props.register } />
     );
 

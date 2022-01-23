@@ -1,6 +1,7 @@
 // Core
-import { FC, useEffect } from 'react';
+import {    FC, useEffect } from 'react';
 import  DatePicker  from 'react-datepicker';
+import { ru } from 'date-fns/locale';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,18 +12,25 @@ import { Tag } from '../../Tag';
 import { schema } from './config';
 
 // Types
-import { ITodos } from '../../../types';
+import { ITodos, ITodoShape } from '../../../types';
 
 // Redux
-import { todosActions, getTags } from '../../../lib/redux';
-
-// Hooks
+import {
+    todosActions,
+    getTags,
+    getTodoById,
+    getRequstedTodos,
+    getSelectedTagId,
+} from '../../../lib/redux';
 
 // Styles
 import 'react-datepicker/dist/react-datepicker.css';
 
-export const TaskCard: FC = () => {
+export const TaskCard: FC<ITodoShape | any> = (props) => {
     const dispatch = useDispatch();
+    const selectedTagId = useSelector(getSelectedTagId);
+    const todoById = useSelector(getTodoById);
+    const todoList = useSelector(getRequstedTodos);
 
     useEffect(() => {
         dispatch(todosActions.getTagsAsync());
@@ -33,11 +41,15 @@ export const TaskCard: FC = () => {
         resolver: yupResolver(schema),
     });
 
-    const startDate = new Date();
+    const startDate = props.deadline ? new Date(props.deadline) : new Date();
 
     const onGetTagId = (id: string) => {
+        if (selectedTagId) {
+            form.setValue('tag', selectedTagId);
+        }
         form.setValue('tag', { id });
     };
+
 
     const tags = useSelector(getTags);
     const tagsJSX = tags.map((tag) => {
@@ -46,6 +58,13 @@ export const TaskCard: FC = () => {
             onGetTagId = { onGetTagId } />;
     });
 
+    const dispatchAction = (taskToDo: ITodos) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        todoById
+            ? dispatch(todosActions.updateTodoAsync(props.id))
+            :  dispatch(todosActions.addTodoAsync(taskToDo));
+    };
+
     const onSubmit = ({
         deadline, description, title,
     }: ITodos) => {
@@ -53,22 +72,35 @@ export const TaskCard: FC = () => {
             completed: false,
             deadline,
             description,
-            tag:       '8b535acc-623b-4ee3-9279-e6175159ff47',
+            tag:       selectedTagId,
             title,
         };
-        dispatch(todosActions.addTodoAsync(taskToDo));
+        dispatchAction(taskToDo);
+        dispatch(todosActions.setIsTaskCardOpen(false));
+    };
+
+    const onDelete = (id: string) => {
+        const updatedTodoList = todoList.filter((todo) => todo.id !== id);
+        dispatch(todosActions.deleteTodoAsync(id, updatedTodoList));
     };
 
     return (
         <form onSubmit = { form.handleSubmit(onSubmit) }>
-            <div className = 'head'></div>
+            <div className = 'head'>
+                { todoById
+                && <><button className = 'button-complete-task'>
+                        завершить
+                </button>
+                <div className = 'button-remove-task' onClick = { () => onDelete(props.id) }></div></> }
+            </div>
             <div className = 'content'>
                 <label className = 'label'>
                     Задачи
                     <TaskInput
                         class = 'title'
                         placeholder = 'Пройти интенсив по React + Redux + TS + Mobx'
-                        register = { form.register('title') } />
+                        register = { form.register('title') }
+                        value = { props.title } />
                 </label>
                 <div className = 'deadline'>
                     <span className = 'label'>Дедлайн</span>
@@ -82,10 +114,10 @@ export const TaskCard: FC = () => {
                                 },
                             }) => (
                                 <DatePicker
-                                    // locale = 'ru'
+                                    locale = { ru }
                                     onChange = { (date) => onChange(date) }
                                     minDate = { startDate }
-                                    selected = { startDate || value } />
+                                    selected = { value || startDate } />
                             ) } />
                     </span>
                 </div>
@@ -95,7 +127,8 @@ export const TaskCard: FC = () => {
                         <TaskInput
                             class = 'text'
                             placeholder = 'После изучения всех технологий, завершить работу над проектами и найти работу.'
-                            register = { form.register('description') } />
+                            register = { form.register('description') }
+                            value = { props.description } />
                     </label>
                 </div>
                 <div className = 'tags'>
@@ -108,6 +141,7 @@ export const TaskCard: FC = () => {
                 <div className = 'form-controls'>
                     <Button
                         type = { 'reset' }
+                        onClick = { form.reset }
                         class = { 'button-reset-task' }>Reset</Button>
                     <Button
                         type = { 'submit' }

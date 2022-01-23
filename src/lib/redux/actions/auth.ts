@@ -52,6 +52,8 @@ export const authActions = Object.freeze({
             dispatch(authActions.setToken(token));
             localStorage.setItem('token', token);
             dispatch(toastActions.setSuccess('Добро пожаловать!'));
+
+            return token;
         } catch (error) {
             const { message } = error as AxiosError;
             dispatch(toastActions.setError(message));

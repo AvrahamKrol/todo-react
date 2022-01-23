@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../../lib/redux/actions';
 
 // Components
@@ -14,8 +14,10 @@ import { schema } from './config';
 
 // Types
 import { ILoginSchema } from '../../../types';
+import { getToken } from '../../../lib/redux';
 
 export const Login: FC = () => {
+    const token = useSelector(getToken);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const form = useForm({
@@ -25,8 +27,10 @@ export const Login: FC = () => {
 
     const onSubmit = (credentials: ILoginSchema) => {
         dispatch(authActions.loginAsync(credentials));
-        navigate('/todo/task-manager');
-        form.reset();
+        if (token) {
+            navigate('/todo/task-manager');
+            form.reset();
+        }
     };
 
     return (

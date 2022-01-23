@@ -16,7 +16,10 @@ export const App: FC = () => {
 
     return (
         <>
-            <ToastContainer newestOnTop transition = { Slide } />;
+            <ToastContainer
+                theme = 'colored'
+                icon = { false } newestOnTop
+                transition = { Slide } />;
 
             <Routes>
                 <Route path = '/todo/login' element = { <Login /> } />

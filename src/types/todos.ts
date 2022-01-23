@@ -14,6 +14,14 @@ export interface ITag {
 }
 
 export interface ITodoShape  {
+    data?: {
+        id: string;
+        completed: boolean;
+        title: string;
+        description: string;
+        deadline: string;
+        tag: ITag;
+    }
     id: string;
     completed: boolean;
     title: string;

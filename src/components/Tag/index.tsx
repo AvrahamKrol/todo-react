@@ -1,9 +1,9 @@
 // Core
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Redux
-import { todosActions, getTagId } from '../../lib/redux';
+import { todosActions, getSelectedTagId } from '../../lib/redux';
 
 type Props = {
     color: string;
@@ -17,8 +17,8 @@ type Props = {
 export const Tag: FC<Props> = ({
     color, bg, id, name, onGetTagId,
 }) => {
-    const tagId = useSelector(getTagId);
     const dispatch = useDispatch();
+    const tagId = useSelector(getSelectedTagId);
 
     return (
         <span
@@ -26,7 +26,7 @@ export const Tag: FC<Props> = ({
             style = { { color, background: bg } }
             onClick = { () => {
                 onGetTagId(id);
-                dispatch(todosActions.setTagId(id));
+                dispatch(todosActions.setSelectedTagId(id));
             }
             }>{ name }</span>
     );

@@ -1,5 +1,5 @@
 // Core
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,7 +10,12 @@ import { Footer } from '../Footer';
 import { Task } from '../Task';
 
 // Redux
-import { getIsTaskCardOpen, todosActions, getTodos } from '../../lib/redux';
+import {
+    getIsTaskCardOpen,
+    todosActions,
+    getRequstedTodos,
+    getTodoById,
+} from '../../lib/redux';
 
 export const TaskManager:FC = () => {
     const dispatch = useDispatch();
@@ -20,15 +25,26 @@ export const TaskManager:FC = () => {
     }, []);
 
     const isTaskCardOpen = useSelector(getIsTaskCardOpen);
-    const onSetIsTaskCardOpen = (): void => {
-        dispatch(todosActions.setIsTaskCardOpen());
+
+    const onSetNewTask = (): void => {
+        dispatch(todosActions.setNewTaskCard());
+        dispatch(todosActions.setIsTaskCardOpen(true));
     };
 
-    const todos = useSelector(getTodos);
+    const todos = useSelector(getRequstedTodos);
+    const todoById = useSelector(getTodoById);
+    // eslint-disable-next-line
+    console.log(todos);
+
+    const onGetTodoById = (id: string) => {
+        dispatch(todosActions.getTodoByIdAsync(id));
+    };
+
+
     const tasksJSX = todos.map((todo) => {
         return <Task
             key = { todo.id } { ...todo }
-            onSetIsTaskCardOpen = { onSetIsTaskCardOpen } />;
+            onGetTodoById = { onGetTodoById } />;
     });
 
 
@@ -43,7 +59,7 @@ export const TaskManager:FC = () => {
                 <div className = 'controls'>
                     <Button
                         class = { 'button-create-task' }
-                        onSetIsTaskCardOpen = { onSetIsTaskCardOpen } >Новая задача</Button>
+                        onSetNewTask = { onSetNewTask } >Новая задача</Button>
                 </div>
                 <div className = 'wrap'>
                     <div className = { `list ${todos.length === 0 ? 'empty' : ''}` }>
@@ -52,7 +68,8 @@ export const TaskManager:FC = () => {
                         </div>
                     </div>
                     { isTaskCardOpen && <div className = 'task-card'>
-                        <TaskCard />
+                        { !todoById && <TaskCard /> }
+                        { todoById && <TaskCard { ...todoById } /> }
                     </div> }
                 </div>
             </main>

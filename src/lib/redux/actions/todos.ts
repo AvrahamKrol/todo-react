@@ -1,14 +1,22 @@
 import { todosTypes } from '../types';
 import {
-    ITodosShape, ITodoShape, ITodos, ITag,
+    ITodoShape, ITodos, ITag, ITodosShape,
 } from '../../../types';
 import { AppThunk } from '../init/store';
 import { todoApi } from '../../../api/todo';
+import { toastActions } from './toast';
+
 
 export const todosActions = Object.freeze({
-    setIsTaskCardOpen: () => {
+    setIsTaskCardOpen: (boolean: boolean) => {
         return {
-            type: todosTypes.SET_IS_TASK_CARD_OPEN,
+            type:    todosTypes.SET_IS_TASK_CARD_OPEN,
+            payload: boolean,
+        };
+    },
+    setNewTaskCard: () => {
+        return {
+            type: todosTypes.SET_NEW_TASK_CARD,
         };
     },
     addTodo: (todo: ITodoShape | ITodoShape[]) => {
@@ -17,10 +25,22 @@ export const todosActions = Object.freeze({
             payload: todo,
         };
     },
-    deleteTodo: (id: string) => {
+    setTodoById: (todo: ITodoShape | undefined) => {
+        return {
+            type:    todosTypes.SET_TODO_BY_ID,
+            payload: todo,
+        };
+    },
+    setTodos: (todo: ITodoShape[]) => {
+        return {
+            type:    todosTypes.SET_TODOS,
+            payload: todo,
+        };
+    },
+    deleteTodo: (todoList: ITodosShape[]) => {
         return {
             type:    todosTypes.DELETE_TODO,
-            payload: id,
+            payload: todoList,
         };
     },
     setTags: (tasks: ITag[]) => {
@@ -29,9 +49,15 @@ export const todosActions = Object.freeze({
             payload: tasks,
         };
     },
-    setTagId: (id: string) => {
+    setSelectedTagId: (id: string) => {
         return {
-            type:    todosTypes.SET_TAG_ID,
+            type:    todosTypes.SET_SELECTED_TAG_ID,
+            payload: id,
+        };
+    },
+    setSelectedTaskId: (id: string) => {
+        return {
+            type:    todosTypes.SET_SELECTED_TASK_ID,
             payload: id,
         };
     },
@@ -40,10 +66,30 @@ export const todosActions = Object.freeze({
             return null;
         }
         try {
-            const task = await todoApi.addTodo(todoTask);
-            dispatch(todosActions.addTodo(task));
+            const todo = await todoApi.addTodo(todoTask);
+            dispatch(todosActions.addTodo(todo));
+            dispatch(toastActions.setInfo('Задача добавлена'));
+        } catch (error) {
             // eslint-disable-next-line
-            console.log(task);
+            console.log(error);
+        }
+    },
+    updateTodoAsync: (id: string): AppThunk => async (dispatch) => {
+        try {
+            const todo = await todoApi.updateTodoById(id);
+            dispatch(todosActions.setTodoById(todo));
+            dispatch(toastActions.setSuccess(`Задача с идентификатором ${todo?.id} успешно обновлена`));
+        } catch (error) {
+            // eslint-disable-next-line
+            console.log(error);
+        }
+    },
+    deleteTodoAsync: (id: string, todoList: ITodoShape[]): AppThunk => async (dispatch) => {
+        try {
+            await todoApi.deleteTodo(id);
+            dispatch(todosActions.setTodos(todoList));
+            dispatch(todosActions.setIsTaskCardOpen(false));
+            dispatch(toastActions.setInfo('Задача удалена'));
         } catch (error) {
             // eslint-disable-next-line
             console.log(error);
@@ -52,11 +98,19 @@ export const todosActions = Object.freeze({
     getTodosAsync: (): AppThunk => async (dispatch) => {
         try {
             const todos = await todoApi.getTodos();
-            dispatch(todosActions.addTodo(todos.data));
-            // eslint-disable-next-line
-             console.log(todos.data);
+            dispatch(todosActions.setTodos(todos.data));
 
             return todos;
+        } catch (error) {
+            // eslint-disable-next-line
+            console.log(error);
+        }
+    },
+    getTodoByIdAsync: (id: string): AppThunk => async (dispatch) => {
+        try {
+            const todo = await todoApi.getTodoById(id);
+            dispatch(todosActions.setTodoById(todo));
+            dispatch(todosActions.setIsTaskCardOpen(true));
         } catch (error) {
             // eslint-disable-next-line
             console.log(error);
@@ -66,8 +120,7 @@ export const todosActions = Object.freeze({
         try {
             const tags = await todoApi.getTags();
             dispatch(todosActions.setTags(tags));
-            // eslint-disable-next-line
-            console.log(tags);
+            dispatch(todosActions.setSelectedTagId(tags[ 2 ].id));
         } catch (error) {
             // eslint-disable-next-line
             console.log(error);

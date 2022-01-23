@@ -4,7 +4,8 @@ export interface IIsLogged {
 
 export interface IButton {
     type?: 'button' | 'reset' | 'submit';
-    onSetIsTaskCardOpen?: () => void,
+    onSetNewTask?: () => void,
+    onClick?: () => void,
     class: string;
 }
 

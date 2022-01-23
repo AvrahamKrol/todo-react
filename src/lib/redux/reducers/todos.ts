@@ -1,12 +1,30 @@
-import id from 'date-fns/locale/id';
+// Redux
 import { AnyAction } from 'redux';
 import { todosTypes } from '../types';
 
-const initialState = {
-    todos:          [],
-    tags:           [],
-    isTaskCardOpen: false,
-    tagId:          '8b535acc-623b-4ee3-9279-e6175159ff47',
+// Types
+import { ITag, ITodoShape } from '../../../types';
+
+interface IInitialState {
+    todos: ITodoShape[],
+    todoById : ITodoShape | null,
+    requestedTodoList: ITodoShape[],
+    currentTodoId: string | null,
+    tags: ITag[],
+    isTaskCardOpen: boolean,
+    selectedTagId: string | null,
+    selectedTaskId: string | null,
+}
+
+const initialState: IInitialState = {
+    todos:             [],
+    todoById:          null,
+    requestedTodoList: [],
+    currentTodoId:     null,
+    tags:              [],
+    isTaskCardOpen:    false,
+    selectedTagId:     null,
+    selectedTaskId:    null,
 };
 
 export const todosReducer = (state = initialState, action: AnyAction) => {
@@ -14,16 +32,31 @@ export const todosReducer = (state = initialState, action: AnyAction) => {
         case todosTypes.ADD_TODO: {
             return {
                 ...state,
-                isTaskCardOpen: false,
-                todos:          [
-                    action.payload,
-                    ...state.todos,
-                ],
+                todos: [action.payload, ...state.todos],
+            };
+        }
+        case todosTypes.SET_TODOS: {
+            return {
+                ...state,
+                requestedTodoList: action.payload,
+            };
+        }
+        case todosTypes.SET_TODO_BY_ID: {
+            return {
+                ...state,
+                todoById: action.payload,
+            };
+        }
+        case todosTypes.SET_NEW_TASK_CARD: {
+            return {
+                ...state,
+                todoById: null,
             };
         }
         case todosTypes.DELETE_TODO: {
             return {
                 ...state,
+                requestedTodoList: action.payload,
             };
         }
         case todosTypes.SET_TAGS: {
@@ -32,10 +65,22 @@ export const todosReducer = (state = initialState, action: AnyAction) => {
                 tags: action.payload,
             };
         }
+        case todosTypes.SET_SELECTED_TAG_ID: {
+            return {
+                ...state,
+                selectedTagId: action.payload,
+            };
+        }
+        case todosTypes.SET_SELECTED_TASK_ID: {
+            return {
+                ...state,
+                selectedTaskId: action.payload,
+            };
+        }
         case todosTypes.SET_IS_TASK_CARD_OPEN: {
             return {
                 ...state,
-                isTaskCardOpen: true,
+                isTaskCardOpen: action.payload,
             };
         }
         default: return state;

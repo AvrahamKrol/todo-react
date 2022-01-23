@@ -16,6 +16,34 @@ export const todoApi = Object.freeze({
 
         return data;
     },
+    async getTodoById(id: string): Promise<ITodoShape | undefined> {
+        const { data } = await axios.get<ITodoShape>(`${TASKS_URL}/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${api.token}`,
+                },
+            });
+
+        return data.data;
+    },
+    async updateTodoById(id: string): Promise<ITodoShape | undefined> {
+        const { data } = await axios.get<ITodoShape>(`${TASKS_URL}/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${api.token}`,
+                },
+            });
+
+        return data.data;
+    },
+    async deleteTodo(id: string): Promise<void> {
+        await axios.delete<void>(`${TASKS_URL}/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${api.token}`,
+                },
+            });
+    },
     async getTodos(): Promise<ITodosShape> {
         const { data } = await axios.get<ITodosShape>(`${TASKS_URL}`, {
             headers: {
