@@ -84,11 +84,25 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
         dispatch(todosActions.deleteTodoAsync(id, updatedTodoList));
     };
 
+    const isCompleted = (data: ITodoShape) => {
+        const todoCompleted = {
+            id:          data.id,
+            title:       data.title,
+            deadline:    data.deadline,
+            tag:         data.tag,
+            completed:   true,
+            description: data.description,
+        };
+        // eslint-disable-next-line
+        console.log(todoCompleted);
+        dispatch(todosActions.setTodoById(todoCompleted));
+    };
+
     return (
         <form onSubmit = { form.handleSubmit(onSubmit) }>
             <div className = 'head'>
                 { todoById
-                && <><button className = 'button-complete-task'>
+                && <><button className = 'button-complete-task' onClick = { () => isCompleted(props) }>
                         завершить
                 </button>
                 <div className = 'button-remove-task' onClick = { () => onDelete(props.id) }></div></> }

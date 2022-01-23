@@ -27,7 +27,7 @@ export const todoApi = Object.freeze({
         return data.data;
     },
     async updateTodoById(id: string): Promise<ITodoShape | undefined> {
-        const { data } = await axios.get<ITodoShape>(`${TASKS_URL}/${id}`,
+        const { data } = await axios.put<ITodoShape>(`${TASKS_URL}/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${api.token}`,
