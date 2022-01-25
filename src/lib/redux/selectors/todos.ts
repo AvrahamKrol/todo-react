@@ -7,9 +7,9 @@ export const getTodos = (state: RootState): ITodoShape[] => {
 export const getTodoById = (state: RootState): ITodoShape => {
     return state.todos.todoById;
 };
-export const getRequstedTodos = (state: RootState): ITodoShape[] => {
-    return state.todos.requestedTodoList;
-};
+// export const getRequstedTodos = (state: RootState): ITodoShape[] => {
+//     return state.todos.requestedTodoList;
+// };
 
 export const getTags = (state: RootState): ITag[] => {
     return state.todos.tags;

@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 // Types
@@ -18,7 +18,6 @@ import { schema } from './config';
 
 export const Signup: FC = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const form = useForm({
         mode:     'onTouched',
@@ -27,14 +26,14 @@ export const Signup: FC = () => {
 
     const onSubmit = (credentials: ISignupSchema) => {
         dispatch(authActions.signUpAsync(credentials));
-        navigate('/todo/task-manager');
+        // navigate('/todo/task-manager');
         form.reset();
     };
 
 
     return (
         <>
-            <Nav />
+            <Nav page = '/todo/task-manager' />
             <main>
                 <section className = 'sign-form' >
                     <form onSubmit = { form.handleSubmit(onSubmit) }>

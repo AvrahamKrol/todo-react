@@ -36,6 +36,9 @@ nav {
             color: $color3;
             font-weight: 700;
         }
+        &.disabled {
+            cursor: not-allowed;
+        }
     }
 
     .button-logout {

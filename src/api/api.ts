@@ -31,4 +31,13 @@ export const api = Object.freeze({
 
         return data;
     },
+
+    async logout() {
+        await axios.get(`${AUTH_URL}/logout`,
+            {
+                headers: {
+                    Authorization: `Bearer ${api.token}`,
+                },
+            });
+    },
 });

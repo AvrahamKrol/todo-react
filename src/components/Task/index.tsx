@@ -4,7 +4,7 @@ import { ru } from 'date-fns/locale';
 import { ITodoShape, ITag } from '../../types';
 
 interface IProps extends ITodoShape {
-    onGetTodoById: (id: string) => void,
+    onGetTodoById: (id: string | undefined) => void,
     tag: ITag;
 }
 

@@ -4,14 +4,19 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 
 // Components
+import { useSelector } from 'react-redux';
 import { TaskManager, Profile } from './components';
 import { Login, Signup } from './components/forms';
+
+// Redux
+import { getIsloggedin } from './lib/redux';
 
 
 // Hooks
 import { useNotification } from './hooks';
 
 export const App: FC = () => {
+    const isLoggedin = useSelector(getIsloggedin);
     useNotification();
 
     return (

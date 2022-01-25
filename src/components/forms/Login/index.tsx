@@ -1,7 +1,7 @@
 // Core
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,12 +14,9 @@ import { schema } from './config';
 
 // Types
 import { ILoginSchema } from '../../../types';
-import { getToken } from '../../../lib/redux';
 
 export const Login: FC = () => {
-    const token = useSelector(getToken);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const form = useForm({
         mode:     'onTouched',
         resolver: yupResolver(schema),
@@ -27,15 +24,12 @@ export const Login: FC = () => {
 
     const onSubmit = (credentials: ILoginSchema) => {
         dispatch(authActions.loginAsync(credentials));
-        if (token) {
-            navigate('/todo/task-manager');
-            form.reset();
-        }
+        form.reset();
     };
 
     return (
         <>
-            <Nav />
+            <Nav page = '/todo/task-manager' />
             <main>
                 <section className = 'sign-form'>
                     <form onSubmit = { form.handleSubmit(onSubmit) }>

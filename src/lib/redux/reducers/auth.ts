@@ -2,7 +2,8 @@ import { AnyAction } from 'redux';
 import { authTypes } from '../types';
 
 const initialState = {
-    token: '',
+    token:      null,
+    isLoggedin: false,
 };
 
 export const authReducer = (state = initialState, action: AnyAction) => {
@@ -11,6 +12,13 @@ export const authReducer = (state = initialState, action: AnyAction) => {
             return {
                 ...state,
                 token: action.payload,
+            };
+        }
+
+        case authTypes.SET_ISLOGGEDIN: {
+            return {
+                ...state,
+                isLoggedin: action.payload,
             };
         }
 

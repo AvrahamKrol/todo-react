@@ -1,6 +1,6 @@
 // Core
 import { FC, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
@@ -13,12 +13,15 @@ import { Task } from '../Task';
 import {
     getIsTaskCardOpen,
     todosActions,
-    getRequstedTodos,
+    authActions,
+    getTodos,
     getTodoById,
 } from '../../lib/redux';
 
 export const TaskManager:FC = () => {
     const dispatch = useDispatch();
+    const token = localStorage.getItem('token');
+
 
     useEffect(() => {
         dispatch(todosActions.getTodosAsync());
@@ -31,12 +34,10 @@ export const TaskManager:FC = () => {
         dispatch(todosActions.setIsTaskCardOpen(true));
     };
 
-    const todos = useSelector(getRequstedTodos);
+    const todos = useSelector(getTodos);
     const todoById = useSelector(getTodoById);
-    // eslint-disable-next-line
-    console.log(todos);
 
-    const onGetTodoById = (id: string) => {
+    const onGetTodoById = (id: string | undefined) => {
         dispatch(todosActions.getTodoByIdAsync(id));
     };
 
@@ -47,13 +48,21 @@ export const TaskManager:FC = () => {
             onGetTodoById = { onGetTodoById } />;
     });
 
+    const onLogout = () => {
+        dispatch(authActions.logoutAsync());
+        dispatch(todosActions.resetAll());
+    };
+
 
     return (
         <>
             <nav>
-                <NavLink to = '/todo/login'>К задачам</NavLink>
-                <NavLink to = '/todo/task-manager'>Профиль</NavLink>
-                <NavLink className = 'button-logout' to = '/todo/profile'>Выйти</NavLink>
+                <NavLink to = '/todo/task-manager'>К задачам</NavLink>
+                <NavLink to = '/todo/profile'>Профиль</NavLink>
+                <NavLink
+                    className = 'button-logout'
+                    to = '/todo/login'
+                    onClick = { onLogout }>Выйти</NavLink>
             </nav>
             <main>
                 <div className = 'controls'>

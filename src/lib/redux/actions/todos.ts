@@ -61,6 +61,11 @@ export const todosActions = Object.freeze({
             payload: id,
         };
     },
+    resetAll: () => {
+        return {
+            type: todosTypes.RESET_ALL,
+        };
+    },
     addTodoAsync: (todoTask: ITodos): AppThunk => async (dispatch) => {
         if (!todoTask) {
             return null;
@@ -74,9 +79,9 @@ export const todosActions = Object.freeze({
             console.log(error);
         }
     },
-    updateTodoAsync: (id: string): AppThunk => async (dispatch) => {
+    updateTodoAsync: (id: string, body: ITodos): AppThunk => async (dispatch) => {
         try {
-            const todo = await todoApi.updateTodoById(id);
+            const todo = await todoApi.updateTodoById(id, body);
             dispatch(todosActions.setTodoById(todo));
             dispatch(toastActions.setSuccess(`Задача с идентификатором ${todo?.id} успешно обновлена`));
         } catch (error) {
@@ -106,7 +111,7 @@ export const todosActions = Object.freeze({
             console.log(error);
         }
     },
-    getTodoByIdAsync: (id: string): AppThunk => async (dispatch) => {
+    getTodoByIdAsync: (id: string | undefined): AppThunk => async (dispatch) => {
         try {
             const todo = await todoApi.getTodoById(id);
             dispatch(todosActions.setTodoById(todo));

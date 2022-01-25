@@ -8,7 +8,7 @@ import { ITag, ITodoShape } from '../../../types';
 interface IInitialState {
     todos: ITodoShape[],
     todoById : ITodoShape | null,
-    requestedTodoList: ITodoShape[],
+    // requestedTodoList: ITodoShape[],
     currentTodoId: string | null,
     tags: ITag[],
     isTaskCardOpen: boolean,
@@ -17,14 +17,13 @@ interface IInitialState {
 }
 
 const initialState: IInitialState = {
-    todos:             [],
-    todoById:          null,
-    requestedTodoList: [],
-    currentTodoId:     null,
-    tags:              [],
-    isTaskCardOpen:    false,
-    selectedTagId:     null,
-    selectedTaskId:    null,
+    todos:          [],
+    todoById:       null,
+    currentTodoId:  null,
+    tags:           [],
+    isTaskCardOpen: false,
+    selectedTagId:  null,
+    selectedTaskId: null,
 };
 
 export const todosReducer = (state = initialState, action: AnyAction) => {
@@ -38,7 +37,7 @@ export const todosReducer = (state = initialState, action: AnyAction) => {
         case todosTypes.SET_TODOS: {
             return {
                 ...state,
-                requestedTodoList: action.payload,
+                todos: action.payload,
             };
         }
         case todosTypes.SET_TODO_BY_ID: {
@@ -56,7 +55,7 @@ export const todosReducer = (state = initialState, action: AnyAction) => {
         case todosTypes.DELETE_TODO: {
             return {
                 ...state,
-                requestedTodoList: action.payload,
+                todos: action.payload,
             };
         }
         case todosTypes.SET_TAGS: {
@@ -81,6 +80,18 @@ export const todosReducer = (state = initialState, action: AnyAction) => {
             return {
                 ...state,
                 isTaskCardOpen: action.payload,
+            };
+        }
+        case todosTypes.RESET_ALL: {
+            return {
+                ...state,
+                todos:          [],
+                todoById:       null,
+                currentTodoId:  null,
+                tags:           [],
+                isTaskCardOpen: false,
+                selectedTagId:  null,
+                selectedTaskId: null,
             };
         }
         default: return state;

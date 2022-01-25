@@ -19,7 +19,7 @@ import {
     todosActions,
     getTags,
     getTodoById,
-    getRequstedTodos,
+    getTodos,
     getSelectedTagId,
 } from '../../../lib/redux';
 
@@ -30,7 +30,7 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
     const dispatch = useDispatch();
     const selectedTagId = useSelector(getSelectedTagId);
     const todoById = useSelector(getTodoById);
-    const todoList = useSelector(getRequstedTodos);
+    const todoList = useSelector(getTodos);
 
     useEffect(() => {
         dispatch(todosActions.getTagsAsync());
@@ -59,9 +59,19 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
     });
 
     const dispatchAction = (taskToDo: ITodos) => {
+        const body = {
+            completed:   taskToDo.completed,
+            title:       taskToDo.title,
+            deadline:    taskToDo.deadline,
+            description: taskToDo.description,
+            tag:         taskToDo.tag,
+        };
+
+        // eslint-disable-next-line
+        console.log(body);
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         todoById
-            ? dispatch(todosActions.updateTodoAsync(props.id))
+            ? dispatch(todosActions.updateTodoAsync(props.id, body))
             :  dispatch(todosActions.addTodoAsync(taskToDo));
     };
 

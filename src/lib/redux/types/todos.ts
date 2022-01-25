@@ -8,4 +8,5 @@ export const todosTypes = Object.freeze({
     SET_IS_TASK_CARD_OPEN: 'SET_IS_TASK_CARD_OPEN',
     SET_SELECTED_TAG_ID:   'SET_SELECTED_TAG_ID',
     SET_SELECTED_TASK_ID:  'SET_SELECTED_TASK_ID',
+    RESET_ALL:             'RESET_ALL',
 });

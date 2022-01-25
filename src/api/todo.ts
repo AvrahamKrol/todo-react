@@ -6,7 +6,7 @@ import {
 
 export const todoApi = Object.freeze({
     async addTodo(todo: ITodos): Promise<ITodoShape> {
-        const { data } = await axios.post<ITodoShape>(`${TASKS_URL}`,
+        const { data } = await axios.post<{ data: ITodoShape }>(`${TASKS_URL}`,
             todo,
             {
                 headers: {
@@ -14,9 +14,9 @@ export const todoApi = Object.freeze({
                 },
             });
 
-        return data;
+        return data.data;
     },
-    async getTodoById(id: string): Promise<ITodoShape | undefined> {
+    async getTodoById(id: string | undefined): Promise<ITodoShape | undefined> {
         const { data } = await axios.get<ITodoShape>(`${TASKS_URL}/${id}`,
             {
                 headers: {
@@ -26,8 +26,9 @@ export const todoApi = Object.freeze({
 
         return data.data;
     },
-    async updateTodoById(id: string): Promise<ITodoShape | undefined> {
+    async updateTodoById(id: string, body: ITodos): Promise<ITodoShape | undefined> {
         const { data } = await axios.put<ITodoShape>(`${TASKS_URL}/${id}`,
+            body,
             {
                 headers: {
                     Authorization: `Bearer ${api.token}`,
