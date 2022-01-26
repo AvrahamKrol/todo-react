@@ -8,7 +8,6 @@ import { ITag, ITodoShape } from '../../../types';
 interface IInitialState {
     todos: ITodoShape[],
     todoById : ITodoShape | null,
-    // requestedTodoList: ITodoShape[],
     currentTodoId: string | null,
     tags: ITag[],
     isTaskCardOpen: boolean,

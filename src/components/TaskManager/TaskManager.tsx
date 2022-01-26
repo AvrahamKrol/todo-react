@@ -1,6 +1,6 @@
 // Core
 import { FC, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
@@ -22,8 +22,11 @@ export const TaskManager:FC = () => {
     const dispatch = useDispatch();
     const token = localStorage.getItem('token');
 
-
     useEffect(() => {
+        if (token) {
+            dispatch(authActions.setIsloggedin(true));
+            dispatch(authActions.setToken(token));
+        }
         dispatch(todosActions.getTodosAsync());
     }, []);
 
@@ -45,6 +48,7 @@ export const TaskManager:FC = () => {
     const tasksJSX = todos.map((todo) => {
         return <Task
             key = { todo.id } { ...todo }
+            todoById = { todoById }
             onGetTodoById = { onGetTodoById } />;
     });
 

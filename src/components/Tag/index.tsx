@@ -18,11 +18,13 @@ export const Tag: FC<Props> = ({
     color, bg, id, name, onGetTagId,
 }) => {
     const dispatch = useDispatch();
-    const tagId = useSelector(getSelectedTagId);
+    const selectedTagId = useSelector(getSelectedTagId);
+    // eslint-disable-next-line
+    console.log(selectedTagId);
 
     return (
         <span
-            className = { `tag ${tagId === id ? 'selected' : ''}` }
+            className = { `tag ${selectedTagId === id ? 'selected' : ''}` }
             style = { { color, background: bg } }
             onClick = { () => {
                 onGetTagId(id);

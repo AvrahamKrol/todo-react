@@ -4,15 +4,34 @@ import { ru } from 'date-fns/locale';
 import { ITodoShape, ITag } from '../../types';
 
 interface IProps extends ITodoShape {
+    todoById: ITodoShape,
     onGetTodoById: (id: string | undefined) => void,
     tag: ITag;
 }
 
 export const Task: FC<IProps> = (props) => {
     const {
-        title, deadline, tag,
+        title, deadline, tag, todoById,
         onGetTodoById, id, completed,
     } = props;
+
+    if (todoById?.id === id) {
+        return (
+            <>
+                <div
+                    className = { `task ${todoById.completed ? 'completed' : ''}` } onClick = { () => {
+                        onGetTodoById(id);
+                    }
+                    }>
+                    <span className = 'title'>{ todoById.title }</span>
+                    <div className = 'meta'>
+                        <span className = 'deadline'>{ `${format(new Date(todoById.deadline), 'PP', { locale: ru })}` }</span>
+                        <span className = 'tag' style = { { color: todoById.tag.color, background: todoById.tag.bg } }>{ todoById.tag.name }</span>
+                    </div>
+                </div>
+            </>
+        );
+    }
 
     return (
         <>

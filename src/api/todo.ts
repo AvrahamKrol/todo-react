@@ -35,6 +35,9 @@ export const todoApi = Object.freeze({
                 },
             });
 
+        // eslint-disable-next-line
+            console.log(data.data);
+
         return data.data;
     },
     async deleteTodo(id: string): Promise<void> {

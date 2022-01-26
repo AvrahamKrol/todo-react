@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { authActions } from '../../../lib/redux/actions';
 
 // Components

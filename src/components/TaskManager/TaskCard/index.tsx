@@ -1,5 +1,5 @@
 // Core
-import {    FC, useEffect } from 'react';
+import {    FC, useEffect, MouseEvent } from 'react';
 import  DatePicker  from 'react-datepicker';
 import { ru } from 'date-fns/locale';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,23 +31,41 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
     const selectedTagId = useSelector(getSelectedTagId);
     const todoById = useSelector(getTodoById);
     const todoList = useSelector(getTodos);
+    const startDate = props.deadline ? new Date(props.deadline) : new Date();
 
     useEffect(() => {
+        if (todoById) {
+            dispatch(todosActions.getTagsAsync(todoById));
+
+            return;
+        }
         dispatch(todosActions.getTagsAsync());
-    }, []);
+    }, [todoById]);
 
     const form = useForm({
         mode:     'onTouched',
         resolver: yupResolver(schema),
     });
 
-    const startDate = props.deadline ? new Date(props.deadline) : new Date();
+    useEffect(() => {
+        if (todoById) {
+            form.setValue('title', todoById.title);
+            form.setValue('description', todoById.description);
+            form.setValue('deadline', new Date(todoById.deadline));
+            form.setValue('completed', todoById.completed);
+            form.setValue('tag', todoById.tag.id || selectedTagId);
+        }
+        form.setValue('deadline', startDate);
+    }, [todoById]);
+
 
     const onGetTagId = (id: string) => {
         if (selectedTagId) {
             form.setValue('tag', selectedTagId);
         }
-        form.setValue('tag', { id });
+        if (!selectedTagId) {
+            form.setValue('tag', { id });
+        }
     };
 
 
@@ -67,8 +85,6 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
             tag:         taskToDo.tag,
         };
 
-        // eslint-disable-next-line
-        console.log(body);
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         todoById
             ? dispatch(todosActions.updateTodoAsync(props.id, body))
@@ -94,25 +110,24 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
         dispatch(todosActions.deleteTodoAsync(id, updatedTodoList));
     };
 
-    const isCompleted = (data: ITodoShape) => {
+    const isCompleted = (event: MouseEvent<HTMLElement>) => {
+        event.preventDefault();
         const todoCompleted = {
-            id:          data.id,
-            title:       data.title,
-            deadline:    data.deadline,
-            tag:         data.tag,
+            title:       todoById.title,
+            deadline:    todoById.deadline,
+            tag:         todoById.tag.id,
             completed:   true,
-            description: data.description,
+            description: todoById.description,
         };
-        // eslint-disable-next-line
-        console.log(todoCompleted);
-        dispatch(todosActions.setTodoById(todoCompleted));
+        dispatch(todosActions.updateTodoAsync(props.id, todoCompleted));
+        dispatch(todosActions.setIsTaskCardOpen(false));
     };
 
     return (
         <form onSubmit = { form.handleSubmit(onSubmit) }>
             <div className = 'head'>
                 { todoById
-                && <><button className = 'button-complete-task' onClick = { () => isCompleted(props) }>
+                && <><button className = 'button-complete-task' onClick = { isCompleted }>
                         завершить
                 </button>
                 <div className = 'button-remove-task' onClick = { () => onDelete(props.id) }></div></> }
@@ -123,8 +138,7 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
                     <TaskInput
                         class = 'title'
                         placeholder = 'Пройти интенсив по React + Redux + TS + Mobx'
-                        register = { form.register('title') }
-                        value = { props.title } />
+                        register = { form.register('title') } />
                 </label>
                 <div className = 'deadline'>
                     <span className = 'label'>Дедлайн</span>
@@ -151,8 +165,7 @@ export const TaskCard: FC<ITodoShape | any> = (props) => {
                         <TaskInput
                             class = 'text'
                             placeholder = 'После изучения всех технологий, завершить работу над проектами и найти работу.'
-                            register = { form.register('description') }
-                            value = { props.description } />
+                            register = { form.register('description') } />
                     </label>
                 </div>
                 <div className = 'tags'>

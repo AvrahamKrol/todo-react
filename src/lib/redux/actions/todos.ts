@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { todosTypes } from '../types';
 import {
     ITodoShape, ITodos, ITag, ITodosShape,
@@ -49,7 +50,7 @@ export const todosActions = Object.freeze({
             payload: tasks,
         };
     },
-    setSelectedTagId: (id: string) => {
+    setSelectedTagId: (id: string | undefined) => {
         return {
             type:    todosTypes.SET_SELECTED_TAG_ID,
             payload: id,
@@ -75,8 +76,8 @@ export const todosActions = Object.freeze({
             dispatch(todosActions.addTodo(todo));
             dispatch(toastActions.setInfo('Задача добавлена'));
         } catch (error) {
-            // eslint-disable-next-line
-            console.log(error);
+            const { message } = error as AxiosError;
+            dispatch(toastActions.setError(message));
         }
     },
     updateTodoAsync: (id: string, body: ITodos): AppThunk => async (dispatch) => {
@@ -85,8 +86,8 @@ export const todosActions = Object.freeze({
             dispatch(todosActions.setTodoById(todo));
             dispatch(toastActions.setSuccess(`Задача с идентификатором ${todo?.id} успешно обновлена`));
         } catch (error) {
-            // eslint-disable-next-line
-            console.log(error);
+            const { message } = error as AxiosError;
+            dispatch(toastActions.setError(message));
         }
     },
     deleteTodoAsync: (id: string, todoList: ITodoShape[]): AppThunk => async (dispatch) => {
@@ -96,8 +97,8 @@ export const todosActions = Object.freeze({
             dispatch(todosActions.setIsTaskCardOpen(false));
             dispatch(toastActions.setInfo('Задача удалена'));
         } catch (error) {
-            // eslint-disable-next-line
-            console.log(error);
+            const { message } = error as AxiosError;
+            dispatch(toastActions.setError(message));
         }
     },
     getTodosAsync: (): AppThunk => async (dispatch) => {
@@ -107,8 +108,8 @@ export const todosActions = Object.freeze({
 
             return todos;
         } catch (error) {
-            // eslint-disable-next-line
-            console.log(error);
+            const { message } = error as AxiosError;
+            dispatch(toastActions.setError(message));
         }
     },
     getTodoByIdAsync: (id: string | undefined): AppThunk => async (dispatch) => {
@@ -117,18 +118,18 @@ export const todosActions = Object.freeze({
             dispatch(todosActions.setTodoById(todo));
             dispatch(todosActions.setIsTaskCardOpen(true));
         } catch (error) {
-            // eslint-disable-next-line
-            console.log(error);
+            const { message } = error as AxiosError;
+            dispatch(toastActions.setError(message));
         }
     },
-    getTagsAsync: (): AppThunk => async (dispatch) => {
+    getTagsAsync: (todoById?: ITodoShape): AppThunk => async (dispatch) => {
         try {
             const tags = await todoApi.getTags();
             dispatch(todosActions.setTags(tags));
-            dispatch(todosActions.setSelectedTagId(tags[ 2 ].id));
+            dispatch(todosActions.setSelectedTagId(todoById?.tag.id || tags[ 0 ].id));
         } catch (error) {
-            // eslint-disable-next-line
-            console.log(error);
+            const { message } = error as AxiosError;
+            dispatch(toastActions.setError(message));
         }
     },
 });
