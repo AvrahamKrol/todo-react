@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/AvrahamKrol/todo-react.git/static/css/main.2886ffab.chunk.css",
-    "main.js": "/AvrahamKrol/todo-react.git/static/js/main.cb65bd43.chunk.js",
-    "main.js.map": "/AvrahamKrol/todo-react.git/static/js/main.cb65bd43.chunk.js.map",
+    "main.js": "/AvrahamKrol/todo-react.git/static/js/main.84e2ab6a.chunk.js",
+    "main.js.map": "/AvrahamKrol/todo-react.git/static/js/main.84e2ab6a.chunk.js.map",
     "runtime-main.js": "/AvrahamKrol/todo-react.git/static/js/runtime-main.cc3d0c5c.js",
     "runtime-main.js.map": "/AvrahamKrol/todo-react.git/static/js/runtime-main.cc3d0c5c.js.map",
     "static/css/2.dbb05ec0.chunk.css": "/AvrahamKrol/todo-react.git/static/css/2.dbb05ec0.chunk.css",
-    "static/js/2.f06b65d8.chunk.js": "/AvrahamKrol/todo-react.git/static/js/2.f06b65d8.chunk.js",
-    "static/js/2.f06b65d8.chunk.js.map": "/AvrahamKrol/todo-react.git/static/js/2.f06b65d8.chunk.js.map",
+    "static/js/2.c26fb58c.chunk.js": "/AvrahamKrol/todo-react.git/static/js/2.c26fb58c.chunk.js",
+    "static/js/2.c26fb58c.chunk.js.map": "/AvrahamKrol/todo-react.git/static/js/2.c26fb58c.chunk.js.map",
     "index.html": "/AvrahamKrol/todo-react.git/index.html",
     "static/css/2.dbb05ec0.chunk.css.map": "/AvrahamKrol/todo-react.git/static/css/2.dbb05ec0.chunk.css.map",
     "static/css/main.2886ffab.chunk.css.map": "/AvrahamKrol/todo-react.git/static/css/main.2886ffab.chunk.css.map",
-    "static/js/2.f06b65d8.chunk.js.LICENSE.txt": "/AvrahamKrol/todo-react.git/static/js/2.f06b65d8.chunk.js.LICENSE.txt",
+    "static/js/2.c26fb58c.chunk.js.LICENSE.txt": "/AvrahamKrol/todo-react.git/static/js/2.c26fb58c.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/AvrahamKrol/todo-react.git/static/media/la-solid-900.a8130346.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.cc3d0c5c.js",
     "static/css/2.dbb05ec0.chunk.css",
-    "static/js/2.f06b65d8.chunk.js",
+    "static/js/2.c26fb58c.chunk.js",
     "static/css/main.2886ffab.chunk.css",
-    "static/js/main.cb65bd43.chunk.js"
+    "static/js/main.84e2ab6a.chunk.js"
   ]
 }
