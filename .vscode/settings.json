@@ -29,7 +29,7 @@
   },
   "editor.fontLigatures": false,
   "window.zoomLevel": 0,
-  "editor.fontSize": 14,
+  "editor.fontSize": 10,
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "workbench.colorTheme": "Gruvbox Dark Hard",
   "cSpell.words": [
